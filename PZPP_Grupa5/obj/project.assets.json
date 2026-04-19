@@ -32177,11 +32177,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Endri\\source\\repos\\ZPP\\PZPP_Grupa5\\PZPP_Grupa5.csproj",
+      "projectUniqueName": "C:\\Users\\Endri\\projekty\\ZPP\\PZPP_Grupa5\\PZPP_Grupa5.csproj",
       "projectName": "PZPP_Grupa5",
-      "projectPath": "C:\\Users\\Endri\\source\\repos\\ZPP\\PZPP_Grupa5\\PZPP_Grupa5.csproj",
+      "projectPath": "C:\\Users\\Endri\\projekty\\ZPP\\PZPP_Grupa5\\PZPP_Grupa5.csproj",
       "packagesPath": "C:\\Users\\Endri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Endri\\source\\repos\\ZPP\\PZPP_Grupa5\\obj\\",
+      "outputPath": "C:\\Users\\Endri\\projekty\\ZPP\\PZPP_Grupa5\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
       "fallbackFolders": [

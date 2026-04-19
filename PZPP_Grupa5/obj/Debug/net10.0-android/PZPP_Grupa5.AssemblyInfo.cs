@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PZPP_Grupa5")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+d3a1ea9a80edd8d682faedfe62e70d4635e1f74c")]
 [assembly: System.Reflection.AssemblyProductAttribute("PZPP_Grupa5")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PZPP_Grupa5")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
