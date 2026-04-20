@@ -9,7 +9,7 @@ namespace PZPP_Grupa5.Services
         private readonly HttpClient _httpClient = new();
 
         // [[[ Klucz API do Gemini AI Studio ]]]
-        private const string ApiKey = "AIzaSyBME2bJ6pcfLWfbOGAcr5Ln8vF-gDttsE8";
+        private const string ApiKey = "AIzaSyDuTRSaaJ90jfLRUzo5mnZQxxVzhrcCUV0";
         private const string Url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={ApiKey}";
 
         // [[[ Implementacja metody IGeminiService ]]]
