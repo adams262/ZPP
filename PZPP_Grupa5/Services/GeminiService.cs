@@ -8,15 +8,23 @@ namespace PZPP_Grupa5.Services
     {
         private readonly HttpClient _httpClient = new();
 
-        // [[[ Klucz API do Gemini AI Studio ]]]
-        private const string ApiKey = "AIzaSyBJOgNSRJoQvz_Vu59EjMobVYHjAiKOaG0";
-        private const string Url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={ApiKey}";
-
-        // [[[ Implementacja metody IGeminiService ]]]
         public async Task<string> GetGeminiAsync(YouTubeDependency dane, bool streszczenie, bool wniosek, bool timestamps)
         {
+            // [[[ Implementacja metody IGeminiService ]]]
+
+            //Pobranie kluczu API z ustawień aplikacji
+            string apiKey = Preferences.Default.Get("GeminiApiKey", string.Empty);
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                return "Błąd: Brak klucza API. Wprowadź go w ustawieniach aplikacji.";
+            }
+
+            string Url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={apiKey}";
+
+
             //  Polecenie dla AI
-            var prompt = "Przeanalizuj ten materiał z YouTube. \n";
+            var prompt = "Przeanalizuj ten materiał z YouTube w jezyku polskim. \n";
             if(streszczenie) prompt += "Stwórz streszczenie tego materiału. \n";
             if(wniosek) prompt += "Podaj wnioski wynikające z tego materiału. \n";
             if(timestamps) prompt += "Podaj znaczniki czasowe dla ważnych momentów w tym materiale. \n";

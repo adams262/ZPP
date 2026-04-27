@@ -1,13 +1,12 @@
 ﻿using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using PZPP_Grupa5.Services;
+using System.Windows.Input; 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PZPP_Grupa5.ViewModels
 {
@@ -16,6 +15,7 @@ namespace PZPP_Grupa5.ViewModels
         private readonly IYouTubeService _youtubeService;
         private readonly IGeminiService _geminiService;
 
+        // [[[ Dependency Injection serwisów YouTubeService i GeminiService ]]]
         public MainViewModel(IYouTubeService youtubeService, IGeminiService geminiService)
         {
             _youtubeService = youtubeService;
@@ -36,31 +36,50 @@ namespace PZPP_Grupa5.ViewModels
 
         [ObservableProperty]
         private bool chceTimestamps;
-
-        // Nowa właściwość do obsługi stanu ładowania
+        
         [ObservableProperty]
-        private bool isBusy;
+        private bool isInputVisible = true;
 
-        [RelayCommand]
-        private async Task ProcessVideoAsync()
+        [ObservableProperty]
+        private bool isLoading = false;
+
+        [ObservableProperty]
+        private bool isResultVisible = false;
+
+       
+        public string UserApiKey
         {
-            // Jeśli już trwa przetwarzanie, nie pozwól na kolejne kliknięcie
-            if (IsBusy) return;
+            get => Preferences.Default.Get("GeminiApiKey", string.Empty);
+            set
+            {
+                Preferences.Default.Set("GeminiApiKey", value);
+                OnPropertyChanged();
+            }
+        }
 
+        // [[[ Komenda do przetwarzania wideo ]]]
+        [RelayCommand]
+        private async Task ProcessVideo()
+        {
+            IsInputVisible = false;
+            IsLoading = true;
+            IsResultVisible = false;
+                
+           
             if (string.IsNullOrWhiteSpace(VideoUrl))
             {
                 TekstWynikowy = "Proszę wprowadzić poprawny URL wideo z YouTube.";
+                IsLoading = false;
+                IsResultVisible = true;
+
                 return;
             }
 
             try
             {
-                // Włączamy animację ładowania
-                IsBusy = true;
-                TekstWynikowy = "Przetwarzanie wideo, proszę czekać...";
-
                 // [[[ Pobieranie danych z YouTube ]]]
                 var youtubeDane = await _youtubeService.GetYouTubeAsync(VideoUrl);
+                TekstWynikowy = "Pobrano dane. Trwa analiza, proszę czekać...";
 
                 if (!youtubeDane.CzyTylkoAudio && youtubeDane.Tekst.Contains("<style>"))
                 {
@@ -68,12 +87,10 @@ namespace PZPP_Grupa5.ViewModels
                     return;
                 }
 
-                TekstWynikowy = "Pobrano dane. Trwa analiza przez AI, proszę czekać...";
-
                 // [[[ Przetwarzanie danych przez Gemini AI Studio ]]]
                 var wynikPrzetworzony = await _geminiService.GetGeminiAsync(youtubeDane, ChceStreszczenie, ChceWniosek, ChceTimestamps);
-
                 TekstWynikowy = wynikPrzetworzony;
+
             }
             catch (Exception ex)
             {
@@ -81,9 +98,18 @@ namespace PZPP_Grupa5.ViewModels
             }
             finally
             {
-                // Wyłączamy animację ładowania niezależnie od wyniku
-                IsBusy = false;
+                IsLoading = false;
+                IsResultVisible = true;
             }
         }
+
+        [RelayCommand]
+        private void BackToInput()
+        {
+            IsResultVisible = false; 
+            IsLoading = false;       
+            IsInputVisible = true;   
+        }
+
     }
 }
