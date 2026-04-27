@@ -7,6 +7,13 @@
              BackgroundColor="{StaticResource Gray950}"
              Shell.NavBarIsVisible="False">
 
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0D0D0D" Offset="0.1" />
+            <GradientStop Color="#1A0B2E" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
 
     <Grid>
         <ScrollView IsVisible="{Binding IsInputVisible}">
