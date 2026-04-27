@@ -2,87 +2,139 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PZPP_Grupa5.Views.MainPage"
+             xmlns:viewmodels="clr-namespace:PZPP_Grupa5.ViewModels"
+             x:DataType="viewmodels:MainViewModel"
              BackgroundColor="{StaticResource Gray950}"
-             Shell.NavBarIsVisible="False"> <ScrollView>
-                 
-        <VerticalStackLayout Padding="25" Spacing="25" HorizontalOptions="Center" MaximumWidthRequest="500">
-
-            <Label Text="AI analiza wideo"
-                   FontSize="32"
-                   FontAttributes="Bold"
-                   TextColor="DarkViolet"
-                   HorizontalOptions="Center"
-                   Margin="0,30,0,10"/>
-
-            <Border StrokeShape="RoundRectangle 12"
-                    StrokeThickness="0"
-                    BackgroundColor="{StaticResource Gray900}"
-                    Padding="15">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Link do filmu z Youtube:" TextColor="BlueViolet" FontSize="20"/>
-                    <Entry Placeholder="https://www.youtube.com/..."
-                           Text="{Binding VideoUrl}"
-                           TextColor="White"
-                           PlaceholderColor="{StaticResource Gray600}"
-                           ClearButtonVisibility="WhileEditing" />
-                </VerticalStackLayout>
-            </Border>
+             Shell.NavBarIsVisible="False">
 
 
-            <Border StrokeShape="RoundRectangle 12"
-                    StrokeThickness="0"
-                    BackgroundColor="{StaticResource Gray900}"            
-                    Padding="20">
-                <VerticalStackLayout Spacing="15">
-                <Label Text="Opcje analizy:" TextColor="DarkViolet" FontSize="20" FontAttributes="Bold" Margin="0,0,0,5"/>
+    <Grid>
+        <ScrollView IsVisible="{Binding IsInputVisible}">
 
-                    <HorizontalStackLayout Spacing="15">
-                        <CheckBox IsChecked="{Binding ChceStreszczenie}" Color="DarkViolet" />
-                        <Label Text="Skrócony opis" VerticalOptions="Center" TextColor="White" />
-                    </HorizontalStackLayout>
+            <VerticalStackLayout Padding="25" Spacing="25" HorizontalOptions="Fill" MaximumWidthRequest="500">
+                <Label Text="AI analiza wideo"
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       TextColor="DarkViolet"
+                       HorizontalOptions="Center"
+                       Margin="0,30,0,10"/>
 
-                    <HorizontalStackLayout Spacing="15">
-                        <CheckBox IsChecked="{Binding ChceWniosek}" Color="DarkViolet" />
-                        <Label Text="Kluczowe wnioski" VerticalOptions="Center" TextColor="White" />
-                    </HorizontalStackLayout>
+                <Border StrokeShape="RoundRectangle 12" StrokeThickness="0" BackgroundColor="{StaticResource Gray900}" Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Klucz API Gemini:" 
+                               TextColor="DarkViolet" 
+                               FontSize="20" 
+                               FontAttributes="Bold"/>
+                        <Entry Placeholder="Wklej swój klucz api AI studio..."
+                               Text="{Binding UserApiKey}"
+                               TextColor="White"
+                               PlaceholderColor="{StaticResource Gray600}" />
+                        <Label Text="Klucz jest zapisywany lokalnie w urządzeniu."
+                               FontSize="10" 
+                               TextColor="Gray" 
+                               HorizontalOptions="End"/>
+                    </VerticalStackLayout>
+                </Border>
 
-                    <HorizontalStackLayout Spacing="15">
-                        <CheckBox IsChecked="{Binding ChceTimestamps}" Color="DarkViolet" />
-                        <Label Text="Ważne punkty (Timestamps)" VerticalOptions="Center" TextColor="White" />
-                    </HorizontalStackLayout>
+                <Border StrokeShape="RoundRectangle 12" StrokeThickness="0" BackgroundColor="{StaticResource Gray900}" Padding="15">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Link do filmu z Youtube:" 
+                               TextColor="DarkViolet" 
+                               FontSize="20"/>
+                        <Entry Placeholder="https://www.youtube.com/..."
+                               Text="{Binding VideoUrl}"
+                               TextColor="White"
+                               PlaceholderColor="{StaticResource Gray600}"
+                               ClearButtonVisibility="WhileEditing" />
+                    </VerticalStackLayout>
+                </Border>
 
-                </VerticalStackLayout>
-            </Border>
 
-            <Button Text="Przetwarzaj wideo" 
-                    Command="{Binding ProcessVideoCommand}"
-                    BackgroundColor="DarkViolet"
-                    TextColor="White"
-                    FontAttributes="Bold"
-                    CornerRadius="12"
-                    HeightRequest="60"
-                    Shadow="{Shadow Brush=Black, Offset='0,5', Radius=10, Opacity=0.3}"
-                    WidthRequest="200"
-                    HorizontalOptions="Center"/>
+                <Border StrokeShape="RoundRectangle 12" StrokeThickness="0" BackgroundColor="{StaticResource Gray900}" Padding="20">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Opcje analizy:" 
+                               TextColor="DarkViolet" 
+                               FontSize="20" 
+                               FontAttributes="Bold" 
+                               Margin="0,0,0,5"/>
+                        <HorizontalStackLayout Spacing="15">
+                            <CheckBox IsChecked="{Binding ChceStreszczenie}" Color="DarkViolet" />
+                            <Label Text="Skrócony opis" 
+                                   VerticalOptions="Center" 
+                                   TextColor="White" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15">
+                            <CheckBox IsChecked="{Binding ChceWniosek}" Color="DarkViolet" />
+                            <Label Text="Kluczowe wnioski" 
+                                   VerticalOptions="Center" 
+                                   TextColor="White" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15">
+                            <CheckBox IsChecked="{Binding ChceTimestamps}" Color="DarkViolet" />
+                            <Label Text="Ważne punkty (Timestamps)" 
+                                   VerticalOptions="Center" 
+                                   TextColor="White" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
 
-            <Label Text="Wynik analizy:" TextColor="DarkViolet" FontSize="20" FontAttributes="Bold"></Label>
+                <Button Text="Przetwarzaj wideo" 
+                        Command="{Binding ProcessVideoCommand}"
+                        BackgroundColor="DarkViolet"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="12"
+                        HeightRequest="60"
+                        WidthRequest="200"
+                        HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+            
+        </ScrollView>
 
-            <Border StrokeShape="RoundRectangle 12"
-                    StrokeThickness="1"
-                    Stroke="{StaticResource Gray900}"
-                    HeightRequest="350"
-                    Padding="15">
-                <ScrollView>
-                    <Label Text="{Binding TekstWynikowy}"
+        <VerticalStackLayout IsVisible="{Binding IsLoading}" VerticalOptions="Center" HorizontalOptions="Fill" Spacing="30" MaximumWidthRequest="500">
+            <ActivityIndicator IsRunning="{Binding IsLoading}" Color="DarkViolet" HeightRequest="120" WidthRequest="120"></ActivityIndicator>
+            <Label Text="Trwa analiza materiału..." 
+                   TextColor="White" 
+                   FontSize="22" 
+                   HorizontalOptions="Center" 
+                   FontAttributes="Bold">
+            </Label>
+            <Label Text="Gemini przetwarza dane, proszę czekać." 
+                   TextColor="Gray" 
+                   HorizontalOptions="Center">
+            </Label>
+        </VerticalStackLayout>
+
+        <ScrollView IsVisible="{Binding IsResultVisible}">
+            <VerticalStackLayout Padding="25" Spacing="20" HorizontalOptions="Fill" MaximumWidthRequest="500">
+                <Label Text="Wynik analizy:" 
+                       TextColor="DarkViolet" 
+                       FontSize="20" 
+                       FontAttributes="Bold">
+                </Label>
+                <Border StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource Gray900}" HeightRequest="350" Padding="15">
+                    <ScrollView>
+                        <Label Text="{Binding TekstWynikowy}"
                            TextColor="{StaticResource Gray200}"
                            LineHeight="1.4"
-                           FontSize="15"/>
-                </ScrollView>
-            </Border>
+                           FontSize="15">
+                        </Label>
+                    </ScrollView>
+                </Border>
 
+                <Button Text="Wróć do konfiguracji" 
+                        Command="{Binding BackToInputCommand}" 
+                        BackgroundColor="DarkViolet" 
+                        TextColor="White" 
+                        CornerRadius="12" 
+                        HeightRequest="50" 
+                        Margin="0,20">
+                </Button>
 
-        </VerticalStackLayout>
+            </VerticalStackLayout>
+            
+        </ScrollView>
         
-    </ScrollView>
+    </Grid>
 
 </ContentPage>

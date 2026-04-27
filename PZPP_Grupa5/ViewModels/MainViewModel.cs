@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PZPP_Grupa5.Services;
+using System.Windows.Input; 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,18 +36,44 @@ namespace PZPP_Grupa5.ViewModels
 
         [ObservableProperty]
         private bool chceTimestamps;
+        
+        [ObservableProperty]
+        private bool isInputVisible = true;
+
+        [ObservableProperty]
+        private bool isLoading = false;
+
+        [ObservableProperty]
+        private bool isResultVisible = false;
+
+       
+        public string UserApiKey
+        {
+            get => Preferences.Default.Get("GeminiApiKey", string.Empty);
+            set
+            {
+                Preferences.Default.Set("GeminiApiKey", value);
+                OnPropertyChanged();
+            }
+        }
 
         // [[[ Komenda do przetwarzania wideo ]]]
         [RelayCommand]
-        private async Task ProcessVideoAsync()
+        private async Task ProcessVideo()
         {
+            IsInputVisible = false;
+            IsLoading = true;
+            IsResultVisible = false;
+                
+           
             if (string.IsNullOrWhiteSpace(VideoUrl))
             {
                 TekstWynikowy = "Proszę wprowadzić poprawny URL wideo z YouTube.";
+                IsLoading = false;
+                IsResultVisible = true;
+
                 return;
             }
-
-            TekstWynikowy = "Przetwarzanie wideo, proszę czekać...";
 
             try
             {
@@ -69,6 +96,20 @@ namespace PZPP_Grupa5.ViewModels
             {
                 TekstWynikowy = $"Wystąpił błąd: {ex.Message}";
             }
+            finally
+            {
+                IsLoading = false;
+                IsResultVisible = true;
+            }
         }
+
+        [RelayCommand]
+        private void BackToInput()
+        {
+            IsResultVisible = false; 
+            IsLoading = false;       
+            IsInputVisible = true;   
+        }
+
     }
 }
